@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: visamatch-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: visamatch
+      POSTGRES_PASSWORD: visamatch_dev
+      POSTGRES_DB: visamatch
+    ports:
+      - "5432:5432"
+    volumes:
+      - visamatch_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U visamatch -d visamatch"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  visamatch_pgdata:

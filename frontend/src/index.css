@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body { @apply bg-slate-950 text-slate-100 antialiased; }
+  button, input, select { @apply outline-none; }
+}
+@layer components {
+  .panel { @apply rounded-2xl border border-slate-800 bg-slate-900/80 shadow-xl shadow-black/10; }
+  .input { @apply w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-slate-100 placeholder:text-slate-500 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400; }
+  .btn-primary { @apply rounded-xl bg-cyan-400 px-4 py-3 font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-50; }
+}

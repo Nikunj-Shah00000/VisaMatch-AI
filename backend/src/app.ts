@@ -1,0 +1,23 @@
+import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
+import { env } from './config/env.js';
+import authRoutes from './routes/auth.routes.js';
+import jobRoutes from './routes/job.routes.js';
+import applicationRoutes from './routes/application.routes.js';
+import aiRoutes from './routes/ai.routes.js';
+import { errorHandler } from './middleware/error.js';
+
+export const app = express();
+app.use(helmet());
+app.use(cors({ origin: env.FRONTEND_URL, credentials: false }));
+app.use(express.json({ limit: '1mb' }));
+app.use(rateLimit({ windowMs: 60_000, limit: 120, standardHeaders: 'draft-8', legacyHeaders: false }));
+app.get('/health', (_req, res) => res.json({ status: 'ok', service: 'visamatch-ai-api' }));
+app.use('/api/auth', authRoutes);
+app.use('/api/jobs', jobRoutes);
+app.use('/api/applications', applicationRoutes);
+app.use('/api/ai', aiRoutes);
+app.use((_req, res) => res.status(404).json({ message: 'Route not found.' }));
+app.use(errorHandler);

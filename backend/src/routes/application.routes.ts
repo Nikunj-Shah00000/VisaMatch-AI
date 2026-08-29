@@ -1,0 +1,11 @@
+import { Router } from 'express';
+import { createApplication, listApplications, getApplication } from '../controllers/application.controller.js';
+import { requireAuth, requireRole } from '../middleware/auth.js';
+import { asyncHandler } from '../utils/asyncHandler.js';
+import { UserRole } from '@prisma/client';
+const router = Router();
+router.use(requireAuth, requireRole(UserRole.CANDIDATE));
+router.post('/', asyncHandler(createApplication));
+router.get('/', asyncHandler(listApplications));
+router.get('/:id', asyncHandler(getApplication));
+export default router;
